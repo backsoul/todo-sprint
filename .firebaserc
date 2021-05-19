@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "todo-sprint": {
+      "hosting": {
+        "todo-sprint": [
+          "todo-sprint"
+        ]
+      }
+    }
+  }
+}
