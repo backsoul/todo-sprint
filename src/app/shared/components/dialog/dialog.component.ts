@@ -33,9 +33,7 @@ export class DialogComponent {
 
   createTodo() {
     this.todos = [...this.todos, this.todo];
-    this.firestore
-      .doc(`${this.user.uid}/sprint`)
-      .set({ todos: [...this.todos] });
+    this.firestore.doc(`${this.user.uid}/sprint`).set({ todos: this.todos });
     this.dialogRef.close();
   }
   onNoClick(): void {

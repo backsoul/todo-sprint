@@ -83,12 +83,12 @@ const _userReducer = createReducer(
   }),
   on(setWorkInProgress, (state, { todos }) => {
     const workinprogressData = { ...state.sprint };
-    workinprogressData.workinprogress = [...todos];
+    workinprogressData.workinprogress = todos;
     return { ...state, sprint: { ...workinprogressData } };
   }),
   on(setDone, (state, { todos }) => {
     const doneData = { ...state.sprint };
-    doneData.done = [...todos];
+    doneData.done = todos;
     return { ...state, sprint: { ...doneData } };
   })
 );

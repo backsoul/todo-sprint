@@ -60,22 +60,24 @@ export class HomeComponent implements OnInit {
     this.obtainDataFirebase();
   }
   obtainDataFirebase() {
-    this.firestore
-      .collection(`${this.user.uid}`)
-      .valueChanges()
-      .subscribe((data: any) => {
-        if (data[0].todos) {
-          this.store.dispatch(setTodo({ todos: data[0].todos }));
-        }
-        if (data[0].workinprogress) {
-          this.store.dispatch(
-            setWorkInProgress({ todos: [...data[0].workinprogress] })
-          );
-        }
-        if (data[0].done) {
-          this.store.dispatch(setDone({ todos: [...data[0].done] }));
-        }
-      });
+    setTimeout(() => {
+      this.firestore
+        .collection(`${this.user.uid}`)
+        .valueChanges()
+        .subscribe((data: any) => {
+          if (data[0].todos) {
+            this.store.dispatch(setTodo({ todos: data[0].todos }));
+          }
+          if (data[0].workinprogress) {
+            this.store.dispatch(
+              setWorkInProgress({ todos: [...data[0].workinprogress] })
+            );
+          }
+          if (data[0].done) {
+            this.store.dispatch(setDone({ todos: [...data[0].done] }));
+          }
+        });
+    }, 1000);
   }
   drop(event: CdkDragDrop<string[]>) {
     let currentCard = Number(
@@ -88,13 +90,14 @@ export class HomeComponent implements OnInit {
       this.store.dispatch(
         removeTodo({ todo: event.previousContainer.data[0] })
       );
-      // this.firestore.doc(`${this.user.uid}`).set({ sprint: [...this.sprint] });
+      this.firestore.doc(`${this.user.uid}/sprint`).set({ ...this.sprint });
     }
     if (currentCard == 1) {
       this.store.dispatch(addDone({ todo: event.previousContainer.data[0] }));
       this.store.dispatch(
         removeWorkInProgress({ todo: event.previousContainer.data[0] })
       );
+      this.firestore.doc(`${this.user.uid}/sprint`).set({ ...this.sprint });
     }
     if (currentCard == 2) {
       this.store.dispatch(
@@ -103,6 +106,7 @@ export class HomeComponent implements OnInit {
       this.store.dispatch(
         addWorkInProgress({ todo: event.previousContainer.data[0] })
       );
+      this.firestore.doc(`${this.user.uid}/sprint`).set({ ...this.sprint });
     }
   }
 
