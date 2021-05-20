@@ -39,7 +39,7 @@ const _userReducer = createReducer(
     if (!sprint.todos) {
       sprint.todos = [todo];
     } else {
-      sprint.todos = [...sprint.todos, todo];
+      sprint.todos = [...sprint.todos, ...todo];
     }
     return { ...state, sprint };
   }),
@@ -63,7 +63,7 @@ const _userReducer = createReducer(
   }),
   on(removeTodo, (state, { todo }) => {
     let todos = { ...state.sprint };
-    todos.todo = [...todos.todo].filter((a) => a !== todo);
+    todos.todos = [...todos.todos].filter((a) => a !== todo);
     return { ...state, sprint: { ...todos } };
   }),
   on(removeDone, (state, { todo }) => {
@@ -78,7 +78,7 @@ const _userReducer = createReducer(
   }),
   on(setTodo, (state, { todos }) => {
     const todoData = { ...state.sprint };
-    todoData.todo = todos;
+    todoData.todos = todos;
     return { ...state, sprint: { ...todoData } };
   }),
   on(setWorkInProgress, (state, { todos }) => {

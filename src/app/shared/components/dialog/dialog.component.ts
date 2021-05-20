@@ -13,7 +13,8 @@ import { AppState } from 'src/app/store/app.reducers';
 })
 export class DialogComponent {
   todo: string = '';
-  todos: any[] = [];
+  sprint: any;
+  todos: string[] = [];
   user: any;
   constructor(
     public dialogRef: MatDialogRef<DialogComponent>,
@@ -23,17 +24,14 @@ export class DialogComponent {
   ngOnInit() {
     this.store.select('user').subscribe((data) => {
       this.user = data.user;
-      if (data.sprint.todo) {
-        this.todos = data.sprint.todo;
-      } else {
-        this.todos = [];
-      }
+      this.sprint = data.sprint;
     });
   }
 
   createTodo() {
-    this.todos = [...this.todos, this.todo];
-    this.firestore.doc(`${this.user.uid}/sprint`).set({ todos: this.todos });
+    this.store.dispatch(addTodo({ todo: this.todo }));
+    console.log(this.sprint);
+    this.firestore.doc(`${this.user.uid}/sprint`).set({ ...this.sprint });
     this.dialogRef.close();
   }
   onNoClick(): void {

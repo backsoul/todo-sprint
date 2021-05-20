@@ -47,8 +47,8 @@ export class HomeComponent implements OnInit {
     this.store.select('user').subscribe((data) => {
       this.user = data.user;
       this.sprint = data.sprint;
-      if (data.sprint.todo) {
-        this.todo = data.sprint.todo;
+      if (data.sprint.todos) {
+        this.todo = data.sprint.todos;
       }
       if (data.sprint.workinprogress) {
         this.workinprogress = data.sprint.workinprogress;
