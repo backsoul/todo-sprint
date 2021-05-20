@@ -15,6 +15,7 @@ import {
 import { SnackbarComponent } from './components/snackbar/snackbar.component';
 import { LoaderComponent } from './components/loader/loader.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     CommonModule,
     RouterModule,
     MatDialogModule,
+    MatIconModule,
     FormsModule,
     MatSnackBarModule,
     MatProgressSpinnerModule,

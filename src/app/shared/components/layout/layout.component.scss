@@ -66,6 +66,19 @@
     -webkit-animation-delay: 0.8s;
   }
 }
+.navigation-buttons {
+  display: flex;
+  justify-content: flex-end;
+  width: 81vw;
+  > mat-icon {
+    outline: none;
+    cursor: pointer;
+    color: #cecece;
+  }
+  .active {
+    color: #333333;
+  }
+}
 @media (max-width: 550px) {
   .header-text > h1 > span {
     font-size: 50px;

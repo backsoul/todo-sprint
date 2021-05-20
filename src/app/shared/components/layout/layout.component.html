@@ -14,8 +14,21 @@
   </h1>
 </div>
 <div class="navigation-buttons">
-  <a [routerLink]="['']">1</a>
-  <a [routerLink]="['stadistics']">2</a>
+  <mat-icon
+    aria-hidden="false"
+    routerLinkActive="active"
+    aria-label="Example home icon"
+    [routerLink]="['']"
+    [routerLinkActiveOptions]="{ exact: true }"
+    >home</mat-icon
+  >
+  <mat-icon
+    aria-hidden="false"
+    routerLinkActive="active"
+    aria-label="Example home icon"
+    [routerLink]="['stadistics']"
+    >bar_chart</mat-icon
+  >
 </div>
 <div class="container-layout">
   <router-outlet></router-outlet>
