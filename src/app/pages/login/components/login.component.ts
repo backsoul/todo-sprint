@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
           );
           this.firestore.doc(`${data.user.uid}/usuario`).set({ ...newUser });
         }
-        this.router.navigate(['home']);
+        this.router.navigate(['']);
       })
       .catch((err) => {
         console.log(err);

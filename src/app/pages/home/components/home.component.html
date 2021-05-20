@@ -1,1 +1,68 @@
-<button (click)="logout()">Cerrar sesión</button>
+<div class="container-home">
+  <div class="header-text">
+    <h1>
+      <span>T</span>
+      <span>O</span>
+      <span>D</span>
+      <span>O</span>
+      <span>S </span>
+      <span>P</span>
+      <span>R</span>
+      <span>I</span>
+      <span>N</span>
+      <span>T</span>
+    </h1>
+  </div>
+  <div class="container-cards">
+    <div class="card-container">
+      <h2>To do</h2>
+
+      <div
+        cdkDropList
+        #todoList="cdkDropList"
+        [cdkDropListData]="todo"
+        [cdkDropListConnectedTo]="[workinprogressList]"
+        class="card-list"
+        (cdkDropListDropped)="drop($event)"
+      >
+        <div class="example-box" *ngFor="let item of todo" cdkDrag>
+          {{ item }}
+        </div>
+      </div>
+    </div>
+    <div class="card-container">
+      <h2>Work in progress</h2>
+      <div
+        cdkDropList
+        #workinprogressList="cdkDropList"
+        [cdkDropListData]="workinprogress"
+        [cdkDropListConnectedTo]="[doneList]"
+        class="card-list"
+        (cdkDropListDropped)="drop($event)"
+      >
+        <div class="example-box" *ngFor="let item of workinprogress" cdkDrag>
+          {{ item }}
+        </div>
+      </div>
+    </div>
+    <div class="card-container">
+      <h2>Done</h2>
+      <div
+        cdkDropList
+        #doneList="cdkDropList"
+        [cdkDropListData]="done"
+        [cdkDropListConnectedTo]="[workinprogressList]"
+        class="card-list"
+        (cdkDropListDropped)="drop($event)"
+      >
+        <div class="example-box" *ngFor="let item of done" cdkDrag>
+          {{ item }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-buttons">
+    <button (click)="openDialog()">Add Todo</button>
+    <button>Run sprint</button>
+  </div>
+</div>

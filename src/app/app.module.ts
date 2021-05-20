@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { StoreModule } from '@ngrx/store';
 import { AngularFireModule } from '@angular/fire';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [AppComponent],
@@ -20,6 +21,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
       logOnly: environment.production,
     }),
     AngularFireModule.initializeApp(environment.firebase),
+    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
