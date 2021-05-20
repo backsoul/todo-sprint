@@ -8,6 +8,9 @@ import {
   removeTodo,
   removeWorkInProgress,
   removeDone,
+  setTodo,
+  setWorkInProgress,
+  setDone,
 } from './../actions/user.actions';
 import { createReducer, on } from '@ngrx/store';
 import { state } from '@angular/animations';
@@ -32,8 +35,6 @@ const _userReducer = createReducer(
     return { ...state, user: null };
   }),
   on(addTodo, (state, { todo }) => {
-    console.log(todo);
-
     let sprint = { ...state.sprint };
     if (!sprint.todos) {
       sprint.todos = [todo];
@@ -62,26 +63,33 @@ const _userReducer = createReducer(
   }),
   on(removeTodo, (state, { todo }) => {
     let todos = { ...state.sprint };
-    let findIndex = [...todos.todos].findIndex((a) => a === todo);
-    todos.todos = [todos.todos].splice(findIndex, 0);
+    todos.todo = [...todos.todo].filter((a) => a !== todo);
     return { ...state, sprint: { ...todos } };
   }),
   on(removeDone, (state, { todo }) => {
-    let done = { ...state.sprint };
-    let findIndex = [...done.done].findIndex((a) => a === todo);
-    done.done = [done.done].splice(findIndex, 0);
-    return { ...state, sprint: { ...done } };
+    let dones = { ...state.sprint };
+    dones.done = [...dones.done].filter((a) => a !== todo);
+    return { ...state, sprint: { ...dones } };
   }),
   on(removeWorkInProgress, (state, { todo }) => {
-    let workinprogress = { ...state.sprint };
-    let findIndex = [...workinprogress.workinprogress].findIndex(
-      (a) => a === todo
-    );
-    workinprogress.workinprogress = [workinprogress.workinprogress].splice(
-      findIndex,
-      0
-    );
-    return { ...state, sprint: { ...workinprogress } };
+    let work = { ...state.sprint };
+    work.workinprogress = [...work.workinprogress].filter((a) => a !== todo);
+    return { ...state, sprint: { ...work } };
+  }),
+  on(setTodo, (state, { todos }) => {
+    const todoData = { ...state.sprint };
+    todoData.todo = todos;
+    return { ...state, sprint: { ...todoData } };
+  }),
+  on(setWorkInProgress, (state, { todos }) => {
+    const workinprogressData = { ...state.sprint };
+    workinprogressData.workinprogress = [...todos];
+    return { ...state, sprint: { ...workinprogressData } };
+  }),
+  on(setDone, (state, { todos }) => {
+    const doneData = { ...state.sprint };
+    doneData.done = [...todos];
+    return { ...state, sprint: { ...doneData } };
   })
 );
 

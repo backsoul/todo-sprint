@@ -1,3 +1,4 @@
+import { AngularFirestore } from '@angular/fire/firestore';
 import { addTodo } from './../../../store/actions/user.actions';
 import { Store } from '@ngrx/store';
 import { TodoInterface } from './../../../core/interfaces/todo.interface';
@@ -12,13 +13,29 @@ import { AppState } from 'src/app/store/app.reducers';
 })
 export class DialogComponent {
   todo: string = '';
+  todos: any[] = [];
+  user: any;
   constructor(
     public dialogRef: MatDialogRef<DialogComponent>,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private firestore: AngularFirestore
   ) {}
+  ngOnInit() {
+    this.store.select('user').subscribe((data) => {
+      this.user = data.user;
+      if (data.sprint.todo) {
+        this.todos = data.sprint.todo;
+      } else {
+        this.todos = [];
+      }
+    });
+  }
 
   createTodo() {
-    this.store.dispatch(addTodo({ todo: this.todo }));
+    this.todos = [...this.todos, this.todo];
+    this.firestore
+      .doc(`${this.user.uid}/sprint`)
+      .set({ todos: [...this.todos] });
     this.dialogRef.close();
   }
   onNoClick(): void {

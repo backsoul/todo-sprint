@@ -12,6 +12,18 @@ export const addTodo = createAction(
   '[ADD TODO] TODO',
   props<{ todo: string }>()
 );
+export const setTodo = createAction(
+  '[SET TODO] TODO',
+  props<{ todos: any[] }>()
+);
+export const setWorkInProgress = createAction(
+  '[SET WORK IN PROGRESS] WORK',
+  props<{ todos: any[] }>()
+);
+export const setDone = createAction(
+  '[SET DONE] DONE',
+  props<{ todos: any[] }>()
+);
 export const removeTodo = createAction(
   '[REMOVE TODO] TODO',
   props<{ todo: string }>()
