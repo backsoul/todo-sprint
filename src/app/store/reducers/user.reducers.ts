@@ -11,6 +11,7 @@ import {
   setTodo,
   setWorkInProgress,
   setDone,
+  changeLoading,
 } from './../actions/user.actions';
 import { createReducer, on } from '@ngrx/store';
 import { state } from '@angular/animations';
@@ -18,11 +19,13 @@ import { state } from '@angular/animations';
 export interface State {
   user: UserInterface | any;
   sprint: any;
+  loading: boolean;
 }
 
 export const initialState: State = {
   user: null,
   sprint: [],
+  loading: false,
 };
 
 const _userReducer = createReducer(
@@ -39,7 +42,7 @@ const _userReducer = createReducer(
     if (!sprint.todos) {
       sprint.todos = [todo];
     } else {
-      sprint.todos = [...sprint.todos, ...todo];
+      sprint.todos = [...sprint.todos, todo];
     }
     return { ...state, sprint };
   }),
@@ -62,9 +65,9 @@ const _userReducer = createReducer(
     return { ...state, sprint };
   }),
   on(removeTodo, (state, { todo }) => {
-    let todos = { ...state.sprint };
-    todos.todos = [...todos.todos].filter((a) => a !== todo);
-    return { ...state, sprint: { ...todos } };
+    let todosData = { ...state.sprint };
+    todosData.todos = todosData.todos.filter((a: any) => a !== todo);
+    return { ...state, sprint: { ...todosData } };
   }),
   on(removeDone, (state, { todo }) => {
     let dones = { ...state.sprint };
@@ -90,6 +93,9 @@ const _userReducer = createReducer(
     const doneData = { ...state.sprint };
     doneData.done = todos;
     return { ...state, sprint: { ...doneData } };
+  }),
+  on(changeLoading, (state, { loading }) => {
+    return { ...state, loading };
   })
 );
 

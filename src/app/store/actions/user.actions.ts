@@ -45,3 +45,8 @@ export const addDone = createAction(
   '[ADD DONE] DONE',
   props<{ todo: string }>()
 );
+
+export const changeLoading = createAction(
+  '[CHANGE LOADING] LOADING',
+  props<{ loading: boolean }>()
+);

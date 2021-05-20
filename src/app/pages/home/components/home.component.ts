@@ -1,3 +1,4 @@
+import { SnackbarComponent } from './../../../shared/components/snackbar/snackbar.component';
 import { AngularFirestore } from '@angular/fire/firestore';
 import {
   addDone,
@@ -5,26 +6,19 @@ import {
   removeWorkInProgress,
   removeTodo,
   removeDone,
-  addTodo,
   setTodo,
   setWorkInProgress,
   setDone,
+  changeLoading,
 } from './../../../store/actions/user.actions';
 import { Store } from '@ngrx/store';
 import { AppState } from './../../../store/app.reducers';
 import { DialogComponent } from './../../../shared/components/dialog/dialog.component';
 import { Component, OnInit } from '@angular/core';
-import {
-  CdkDragDrop,
-  moveItemInArray,
-  transferArrayItem,
-} from '@angular/cdk/drag-drop';
-import {
-  MatDialog,
-  MatDialogRef,
-  MAT_DIALOG_DATA,
-} from '@angular/material/dialog';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import { MatDialog } from '@angular/material/dialog';
 import { take, map } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-home',
@@ -40,10 +34,13 @@ export class HomeComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private store: Store<AppState>,
-    private firestore: AngularFirestore
+    private firestore: AngularFirestore,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
+    this.store.dispatch(changeLoading({ loading: true }));
+
     this.store.select('user').subscribe((data) => {
       this.user = data.user;
       this.sprint = data.sprint;
@@ -60,11 +57,12 @@ export class HomeComponent implements OnInit {
     this.obtainDataFirebase();
   }
   obtainDataFirebase() {
-    setTimeout(() => {
-      this.firestore
-        .collection(`${this.user.uid}`)
-        .valueChanges()
-        .subscribe((data: any) => {
+    this.firestore
+      .collection(`${this.user?.uid}`)
+      .valueChanges()
+      .subscribe((data: any) => {
+        if (data[0]) {
+          this.store.dispatch(changeLoading({ loading: false }));
           if (data[0].todos) {
             this.store.dispatch(setTodo({ todos: data[0].todos }));
           }
@@ -76,41 +74,67 @@ export class HomeComponent implements OnInit {
           if (data[0].done) {
             this.store.dispatch(setDone({ todos: [...data[0].done] }));
           }
-        });
-    }, 1000);
+        }
+      });
   }
   drop(event: CdkDragDrop<string[]>) {
     let currentCard = Number(
       event.previousContainer.id.charAt(event.previousContainer.id.length - 1)
     );
     if (currentCard == 0) {
+      this.store.dispatch(changeLoading({ loading: true }));
+
       this.store.dispatch(
-        addWorkInProgress({ todo: event.previousContainer.data[0] })
+        addWorkInProgress({
+          todo: this.sprint.todos[event.previousIndex],
+        })
       );
       this.store.dispatch(
-        removeTodo({ todo: event.previousContainer.data[0] })
+        removeTodo({
+          todo: this.sprint.todos[event.previousIndex],
+        })
       );
+
       this.firestore.doc(`${this.user.uid}/sprint`).set({ ...this.sprint });
     }
     if (currentCard == 1) {
-      this.store.dispatch(addDone({ todo: event.previousContainer.data[0] }));
+      this.store.dispatch(changeLoading({ loading: true }));
+
       this.store.dispatch(
-        removeWorkInProgress({ todo: event.previousContainer.data[0] })
+        addDone({
+          todo: this.sprint.workinprogress[event.previousIndex],
+        })
+      );
+      this.store.dispatch(
+        removeWorkInProgress({
+          todo: this.sprint.workinprogress[event.previousIndex],
+        })
       );
       this.firestore.doc(`${this.user.uid}/sprint`).set({ ...this.sprint });
     }
     if (currentCard == 2) {
+      this.store.dispatch(changeLoading({ loading: true }));
+
       this.store.dispatch(
-        removeDone({ todo: event.previousContainer.data[0] })
+        addWorkInProgress({ todo: this.sprint.done[event.previousIndex] })
       );
       this.store.dispatch(
-        addWorkInProgress({ todo: event.previousContainer.data[0] })
+        removeDone({ todo: this.sprint.done[event.previousIndex] })
       );
+
       this.firestore.doc(`${this.user.uid}/sprint`).set({ ...this.sprint });
     }
   }
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(DialogComponent);
+    this.dialog.open(DialogComponent);
+  }
+  openSnackBar() {
+    this.snackBar.openFromComponent(SnackbarComponent, {
+      data: 'some data',
+      horizontalPosition: 'end',
+      verticalPosition: 'bottom',
+      panelClass: 'success',
+    });
   }
 }

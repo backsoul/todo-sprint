@@ -111,3 +111,11 @@ img:hover {
     -webkit-animation-delay: 0.8s;
   }
 }
+@media (max-width: 550px) {
+  .header-text > h1 > span {
+    font-size: 50px;
+  }
+  .typewriter > h1 {
+    font-size: 22px;
+  }
+}

@@ -3,6 +3,7 @@
   <input
     type="text"
     [(ngModel)]="todo"
+    (keydown.enter)="createTodo()"
     style="
       border: none;
       background: #ededed;

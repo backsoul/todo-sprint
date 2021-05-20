@@ -1,5 +1,5 @@
 import { AngularFirestore } from '@angular/fire/firestore';
-import { addTodo } from './../../../store/actions/user.actions';
+import { addTodo, changeLoading } from './../../../store/actions/user.actions';
 import { Store } from '@ngrx/store';
 import { TodoInterface } from './../../../core/interfaces/todo.interface';
 import { Component, Inject, OnInit } from '@angular/core';
@@ -29,8 +29,10 @@ export class DialogComponent {
   }
 
   createTodo() {
+    this.store.dispatch(changeLoading({ loading: true }));
+
     this.store.dispatch(addTodo({ todo: this.todo }));
-    console.log(this.sprint);
+
     this.firestore.doc(`${this.user.uid}/sprint`).set({ ...this.sprint });
     this.dialogRef.close();
   }

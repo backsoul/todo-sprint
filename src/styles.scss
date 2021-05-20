@@ -121,3 +121,23 @@ body {
 .cdk-overlay-pane {
   width: 320px !important;
 }
+.mat-snack-bar-container {
+  font-weight: bold !important;
+  border: none !important;
+  margin-right: 1rem !important;
+  font-size: 12px;
+}
+.success {
+  background: #38f540 !important;
+  color: white !important;
+}
+.cdk-overlay-pane {
+  margin-right: 60px !important;
+}
+
+.transparent .mat-dialog-container {
+  box-shadow: none;
+  display: flex !important;
+  justify-content: center !important;
+  background: rgba(0, 0, 0, 0);
+}
