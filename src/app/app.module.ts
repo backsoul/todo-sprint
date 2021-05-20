@@ -1,3 +1,4 @@
+import { buildSpecificModules } from './build-specifics/index';
 import { MatDialogModule } from '@angular/material/dialog';
 import { appReducers } from './store/app.reducers';
 import { environment } from './../environments/environment';
@@ -20,10 +21,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     MatDialogModule,
     NgxSpinnerModule,
     StoreModule.forRoot(appReducers),
-    StoreDevtoolsModule.instrument({
-      maxAge: 25,
-      logOnly: environment.production,
-    }),
+    ...buildSpecificModules,
     AngularFireModule.initializeApp(environment.firebase),
     BrowserAnimationsModule,
   ],
