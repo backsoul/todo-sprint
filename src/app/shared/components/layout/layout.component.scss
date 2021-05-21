@@ -70,17 +70,44 @@
   display: flex;
   justify-content: flex-end;
   width: 81vw;
-  > mat-icon {
+  > .buttons > mat-icon {
     outline: none;
     cursor: pointer;
     color: #cecece;
+    margin: 0px 0.5rem;
   }
-  .active {
+  > .buttons > .active {
     color: #333333;
   }
+}
+.question > mat-icon {
+  outline: none;
+  cursor: pointer;
+  color: #cecece;
+}
+.question > mat-icon:hover {
+  color: #333333;
+}
+.container-header {
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+}
+.navigation-buttons {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
 }
 @media (max-width: 550px) {
   .header-text > h1 > span {
     font-size: 50px;
+  }
+  .navigation-buttons {
+    width: 75%;
+  }
+}
+@media (max-width: 1058px) and (min-width: 550px) {
+  .navigation-buttons {
+    width: 50%;
   }
 }
